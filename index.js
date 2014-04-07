@@ -1,42 +1,90 @@
-var wordnet_data = {}
-
-	function load_or_unzip_wordnet(callback) {
-		try {
-			var o = load_data()
-			callback(o)
-		} catch (er) {
-			unzip_wordnet(function() {
-				var o = load_data()
-				callback(o)
-			})
-		}
-	}
-
-	function load_data() {
-		return {
-			noun: require("./data/Noun").data,
-			adjective: require("./data/Adjective").data,
-			verb: require("./data/Verb").data,
-			adverb: require("./data/Adverb").data,
-		}
-	}
+var helpers = require("./helpers")
 
 
-	function unzip_wordnet(cb) {
-		console.log("unzipping wordnet, may take a moment..")
-		var exec = require('child_process').exec;
-		var command = "unzip ./data.zip"
-		exec(command, {
-			env: {
-				"PATH": "/usr/local/bin:/usr/bin:/bin" //is this cross-platform?
+helpers.load_or_unzip(function(data) {
+
+	//
+	//some helper methods
+
+	var fast_search = function(str, k) {
+		var founds = []
+		var l = data[k].length;
+		for (var i = 0; i < l; i++) {
+			for (var o = 0; o < data[k][i].words.length; o++) {
+				if (data[k][i].words[o] === str) {
+					founds.push(data[k][i])
+					break
+				}
 			}
-		}, function(error, stdout, stderr) {
-			console.log(stdout);
-			cb()
-		})
+		}
+		return founds
+	}
+
+	var is_id = function(str) {
+		return str.match(/[a-z]\.(adjective|verb|noun|adverb)\.[0-9]/i) != null
+	}
+
+	var id_lookup = function(id, k) {
+		var l = data[k].length;
+		for (var i = 0; i < l; i++) {
+			if (data[k][i].id == id) {
+				return data[k][i]
+			}
+		}
+	}
+
+	var lookup = function(str, k) {
+		//given an id
+		if (is_id(str)) {
+			var type = str.match(/[a-z]\.(adjective|verb|noun|adverb)\.[0-9]/i)[1]
+			return id_lookup(str, type)
+		}
+		//given a pos
+		if (k) {
+			if (str) {
+				return fast_search(str, k)
+			}
+			return data[k]
+		}
+		//else, lookup in all types
+		var types = ["adverb", "adjective", "verb"] //, "noun"]
+		var all = []
+		for (var i = 0; i < types.length; i++) {
+			all = all.concat(fast_search(str, types[i]))
+		}
+		return all
 	}
 
 
-load_or_unzip_wordnet(function(data) {
+	//
+	//begin API now
+	exports.lookup = lookup
+
+	exports.adverbs = {
+		lookup: function(s) {
+			return lookup(s, "adverb")
+		}
+	}
+
+
+	testit()
+	// good_tests()
 
 })
+
+
+
+
+	function testit() {
+		console.log(exports.adverbs.lookup("quickly"))
+	}
+
+
+	function good_tests() {
+		console.log(exports.adverbs.lookup("quickly").length == 3)
+		console.log(exports.lookup('warrant').length == 6)
+		console.log(exports.lookup('homosexual.adjective.01').syntactic_category == "Adjective")
+		console.log(exports.adjectives.lookup('gay').length == 6)
+		console.log(exports.verbs.lookup('woo').length == 2)
+
+	}
