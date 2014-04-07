@@ -47,7 +47,7 @@ helpers.load_or_unzip(function(data) {
 			return data[k]
 		}
 		//else, lookup in all types
-		var types = ["adverb", "adjective", "verb"] //, "noun"]
+		var types = ["adverb", "adjective", "verb", "noun"]
 		var all = []
 		for (var i = 0; i < types.length; i++) {
 			all = all.concat(fast_search(str, types[i]))
@@ -65,9 +65,24 @@ helpers.load_or_unzip(function(data) {
 			return lookup(s, "adverb")
 		}
 	}
+	exports.adjectives = {
+		lookup: function(s) {
+			return lookup(s, "adjective")
+		}
+	}
+	exports.verbs = {
+		lookup: function(s) {
+			return lookup(s, "verb")
+		}
+	}
+	exports.nouns = {
+		lookup: function(s) {
+			return lookup(s, "noun")
+		}
+	}
 
 
-	testit()
+	// testit()
 	// good_tests()
 
 })

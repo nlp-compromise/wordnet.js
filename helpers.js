@@ -3,7 +3,7 @@ exports.load_or_unzip = function(callback) {
 
 	var load_data = function() {
 		return {
-			// noun: require("./data/Noun").data,
+			noun: require("./data/Noun").data,
 			adjective: require("./data/Adjective").data,
 			verb: require("./data/Verb").data,
 			adverb: require("./data/Adverb").data,
