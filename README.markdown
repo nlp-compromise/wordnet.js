@@ -2,8 +2,12 @@
 
 loving build of [wordnet](http://wordnet.princeton.edu/) in JSON.
 
-so you don't have to install, like a virtual masheen.
+no memory pointers, no python. no silly stuff at all.
 
+the data is zipped for github, but it automatically unzips when you first use it.
+
+if you just want the JSON, unzip ./data.zip
+it's 6mb/32mb-uncompressed
 
 # Liberties taken
 
@@ -54,6 +58,6 @@ root adjectives
 
 
 # roll your own build
-to build your own, get a [freebase key](https://code.google.com/apis/console/?pli=1)
+to build your own, get a [freebase key](https://code.google.com/apis/console/?pli=1) and put it in ./build.js
 run 'npm install'
-then 'node ./coffeejs/build.js'
+then 'node ./build.js'
