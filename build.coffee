@@ -12,13 +12,13 @@ do_pos= (pos="Adverb", cb=console.log)->
   master_query= {
     "name":null,
     "type": "/base/wordnet/synset",
-    "lexname": null,
+    "lexname": [],
     "syntactic_category": pos,
     "gloss": [],
     "word": [{
-      "/base/wordnet/word_sense/word": {
-        "/base/wordnet/word/word": null
-      }
+      "/base/wordnet/word_sense/word": [{
+        "/base/wordnet/word/word": []
+      }]
     }]
   }
 
@@ -39,13 +39,12 @@ do_pos= (pos="Adverb", cb=console.log)->
       }],
       "instance": [{
         "optional": true,
-        "name": null
+        "name": []
       }]
     },
 
     Adjective:{
       "satellite":[],
-      "cluster_head":[]
     }
 
     Verb:{
@@ -74,14 +73,13 @@ do_pos= (pos="Adverb", cb=console.log)->
 
       obj= {
         id:r.name,
-        lexname:r.lexname,
+        lexname:r.lexname[0],
         syntactic_category:r.syntactic_category,
         description:r.gloss[0],
-        words:r.word.map((w)-> w["/base/wordnet/word_sense/word"]["/base/wordnet/word/word"]),
+        words:r.word.map((w)-> w["/base/wordnet/word_sense/word"][0]["/base/wordnet/word/word"][0]),
       }
 
       if pos=="Noun"
-        console.log "hiiiiiiiii"
         obj.relationships= {
           type_of:r.hypernym,
           made_with: r.substance_holonym,
@@ -96,7 +94,6 @@ do_pos= (pos="Adverb", cb=console.log)->
 
       if pos=="Adjective"
         obj.similar= r.satellite
-        obj.cluster_head= r.cluster_head
 
       if pos=="Verb"
         obj.assumes= r.entailment
@@ -111,5 +108,5 @@ do_pos= (pos="Adverb", cb=console.log)->
 
 
 all_pos= ["Adverb", "Adjective", "Verb", "Noun"]
-do_pos all_pos[1], (r)->
+do_pos all_pos[3], (r)->
   console.log r.length

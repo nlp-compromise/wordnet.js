@@ -22,14 +22,16 @@ do_pos = function(pos, cb) {
   master_query = {
     "name": null,
     "type": "/base/wordnet/synset",
-    "lexname": null,
+    "lexname": [],
     "syntactic_category": pos,
     "gloss": [],
     "word": [
       {
-        "/base/wordnet/word_sense/word": {
-          "/base/wordnet/word/word": null
-        }
+        "/base/wordnet/word_sense/word": [
+          {
+            "/base/wordnet/word/word": []
+          }
+        ]
       }
     ]
   };
@@ -55,13 +57,12 @@ do_pos = function(pos, cb) {
       "instance": [
         {
           "optional": true,
-          "name": null
+          "name": []
         }
       ]
     },
     Adjective: {
-      "satellite": [],
-      "cluster_head": []
+      "satellite": []
     },
     Verb: {
       "entailment": [],
@@ -89,15 +90,14 @@ do_pos = function(pos, cb) {
       }
       obj = {
         id: r.name,
-        lexname: r.lexname,
+        lexname: r.lexname[0],
         syntactic_category: r.syntactic_category,
         description: r.gloss[0],
         words: r.word.map(function(w) {
-          return w["/base/wordnet/word_sense/word"]["/base/wordnet/word/word"];
+          return w["/base/wordnet/word_sense/word"][0]["/base/wordnet/word/word"][0];
         })
       };
       if (pos === "Noun") {
-        console.log("hiiiiiiiii");
         obj.relationships = {
           type_of: r.hypernym,
           made_with: r.substance_holonym,
@@ -112,7 +112,6 @@ do_pos = function(pos, cb) {
       }
       if (pos === "Adjective") {
         obj.similar = r.satellite;
-        obj.cluster_head = r.cluster_head;
       }
       if (pos === "Verb") {
         obj.assumes = r.entailment;
@@ -127,6 +126,6 @@ do_pos = function(pos, cb) {
 
 all_pos = ["Adverb", "Adjective", "Verb", "Noun"];
 
-do_pos(all_pos[1], function(r) {
+do_pos(all_pos[3], function(r) {
   return console.log(r.length);
 });

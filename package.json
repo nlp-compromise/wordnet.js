@@ -1,25 +1,25 @@
 {
-    "author": "Spencer Kelly <spencerwater@gmail.com> (http://spencermounta.in)",
-    "name": "freebase",
-    "description": "a wordnet build in JSON",
-    "version": "0.0.1",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/spencermountain/wordnet.js.git"
-    },
-    "main": "index.js",
-    "engines": [
-        "node >= 0.3.6"
-    ],
-    "dependencies": {
-        "freebase": "*",
-        "dirtyjs": "*",
-        "async": "*",
-    },
-    "devDependencies": {
-        "grunt": "0.4.2",
-        "grunt-contrib-jshint": "*",
-        "grunt-contrib-concat": "*",
-        "grunt-contrib-uglify": "*"
-    }
+  "author": "Spencer Kelly <spencerwater@gmail.com> (http://spencermounta.in)",
+  "name": "freebase",
+  "description": "a wordnet build in JSON",
+  "version": "0.0.2",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/spencermountain/wordnet.js.git"
+  },
+  "main": "index.js",
+  "engines": [
+    "node >= 0.3.6"
+  ],
+  "dependencies": {
+    "freebase": "*",
+    "dirtyjs": "*",
+    "async": "*"
+  },
+  "devDependencies": {
+    "grunt": "0.4.2",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-uglify": "*"
+  }
 }
