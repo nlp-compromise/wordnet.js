@@ -2,7 +2,7 @@
   "author": "Spencer Kelly <spencerwater@gmail.com> (http://spencermounta.in)",
   "name": "wordnetjs",
   "description": "a wordnet build in JSON",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/spencermountain/wordnet.js.git"
@@ -11,14 +11,9 @@
   "engines": [
     "node >= 0.3.6"
   ],
-  "dependencies": {
-    "dirtyjs": "*"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "freebase": "*",
-    "grunt": "0.4.2",
-    "grunt-contrib-jshint": "*",
-    "grunt-contrib-concat": "*",
-    "grunt-contrib-uglify": "*"
+    "dirtyjs": "*",
+    "freebase": "*"
   }
 }
