@@ -2,13 +2,28 @@
 
 loving build of [wordnet](http://wordnet.princeton.edu/) in JSON.
 
-no memory pointers, no python. no silly stuff at all.
+no memory pointers, no python, no DSL, no guff. no crazy-framework stuff at all.
 
 the data is zipped for github, but it automatically unzips when you first use it.
+
+    npm install wordnetjs
 
 if you just want the JSON, unzip ./data.zip
 then you can just do your random shit.
 it's 6mb -> 32mb
+
+it's the cutest way to use wordnet by a pretty wide margin.
+
+#API
+````javascript
+wn= require("wordnet")
+wn.lookup('warrant')
+//6 results
+
+wn.verb.lookup('warrant')
+//1 result
+````
+
 
 # Liberties taken
 

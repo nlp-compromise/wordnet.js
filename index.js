@@ -28,7 +28,7 @@ helpers.load_or_unzip(function(data) {
 		var l = data[k].length;
 		for (var i = 0; i < l; i++) {
 			if (data[k][i].id == id) {
-				return data[k][i]
+				return [data[k][i]]
 			}
 		}
 	}
@@ -59,28 +59,54 @@ helpers.load_or_unzip(function(data) {
 	//
 	//begin API now
 	exports.lookup = lookup
+	exports.data = data
 
-	exports.adverbs = {
-		lookup: function(s) {
-			return lookup(s, "adverb")
-		}
+	//main methods
+	exports.adverb = function(s) {
+		return lookup(s, "adverb")
 	}
-	exports.adjectives = {
-		lookup: function(s) {
-			return lookup(s, "adjective")
-		}
+	exports.adjective = function(s) {
+		return lookup(s, "adjective")
 	}
-	exports.verbs = {
-		lookup: function(s) {
-			return lookup(s, "verb")
-		}
+	exports.verb = function(s) {
+		return lookup(s, "verb")
 	}
-	exports.nouns = {
-		lookup: function(s) {
-			return lookup(s, "noun")
-		}
+	exports.noun = function(s) {
+		return lookup(s, "noun")
 	}
 
+	exports.synonyms = function(s) {
+		return lookup(s, "adjective").map(function(syn) {
+			var loose = syn.similar.map(function(id) {
+				return lookup(id, "adjective")[0].words
+			})
+			return {
+				synset: syn.id,
+				close: syn.words.filter(function(w) {
+					return w != s
+				}),
+				far: helpers.flatten(loose).filter(function(w) {
+					return w != s
+				})
+			}
+		})
+	}
+
+	exports.antonyms = function(s) {
+		var ants = lookup(s, "adjective").map(function(syn) {
+			return syn.antonym
+		})
+		ants = helpers.unique(helpers.flatten(ants))
+		var all = ants.map(function(id) {
+			return lookup(id, "adjective")[0]
+		})
+		console.log(all)
+	}
+	exports.pos = function(s) {
+		return helpers.unique(lookup(s).map(function(syn) {
+			return syn.syntactic_category
+		}))
+	}
 
 	// testit()
 	// good_tests()
@@ -91,15 +117,18 @@ helpers.load_or_unzip(function(data) {
 
 
 	function testit() {
-		console.log(exports.adverbs.lookup("quickly"))
+		// console.log(exports.antonyms("good"))
+		console.log(exports.synonyms("fresh"))
 	}
 
 
 	function good_tests() {
 		console.log(exports.adverbs.lookup("quickly").length == 3)
 		console.log(exports.lookup('warrant').length == 6)
-		console.log(exports.lookup('homosexual.adjective.01').syntactic_category == "Adjective")
+		console.log(exports.lookup('homosexual.adjective.01')[0].syntactic_category == "Adjective")
 		console.log(exports.adjectives.lookup('gay').length == 6)
 		console.log(exports.verbs.lookup('woo').length == 2)
+		console.log(exports.data.adjective.length == 18156)
+		console.log(exports.pos("warrant").length == 2)
 
 	}
