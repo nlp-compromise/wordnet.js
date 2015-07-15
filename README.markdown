@@ -16,12 +16,24 @@ it's the cutest way to use wordnet by a pretty wide margin.
 
 #API
 ````javascript
-wn= require("wordnet")
+wn= require("wordnetjs")
+//generic lookup
 wn.lookup('warrant')
 //6 results
 
-wn.verb.lookup('warrant')
-//1 result
+//pos-specific lookups
+wn.verb('warrant') // (1 result)
+wn.adjective('cheeky')
+wn.adverb('slightly')
+wn.noun('grape')
+
+//sugar
+wn.synonyms("perverse")
+// [{id:"depraved.adjective.01"...}]
+wn.antonyms("perverse")
+// [{id:"docile.adjective.01"}]
+wn.pos("swim")
+//[ 'Verb', 'Noun' ]
 ````
 
 
