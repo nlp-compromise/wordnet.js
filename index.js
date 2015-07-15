@@ -109,4 +109,4 @@ helpers.load_or_unzip(function(data) {
 })
 
 // console.log(exports.pos("perverse"))
-console.log(exports.antonyms("perverse"))
+// console.log(exports.antonyms("perverse"))
