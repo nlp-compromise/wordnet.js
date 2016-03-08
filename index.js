@@ -31,6 +31,7 @@ helpers.load_or_unzip(function(data) {
         return [data[k][i]]
       }
     }
+    return null
   }
 
   let lookup = function(str, k) {
@@ -111,9 +112,9 @@ helpers.load_or_unzip(function(data) {
     helpers.load_or_unzip((obj)=>{
       let keys=Object.keys(obj)
       let words={}
-      for(let i=0; i<keys.length; i++){
-        for(let o=0; o<obj[keys[i]].length; o++){
-          for(let w=0; w<obj[keys[i]][o].words.length; w++){
+      for (let i=0; i<keys.length; i++){
+        for (let o=0; o<obj[keys[i]].length; o++){
+          for (let w=0; w<obj[keys[i]][o].words.length; w++){
             words[obj[keys[i]][o].words[w]]=true
           }
         }
