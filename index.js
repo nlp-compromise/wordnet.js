@@ -1,15 +1,16 @@
-var helpers = require("./helpers")
+'use strict'
+let helpers = require("./helpers")
 
 helpers.load_or_unzip(function(data) {
 
   //
   //some helper methods
 
-  var fast_search = function(str, k) {
-    var founds = []
-    var l = data[k].length;
-    for (var i = 0; i < l; i++) {
-      for (var o = 0; o < data[k][i].words.length; o++) {
+  let fast_search = function(str, k) {
+    let founds = []
+    let l = data[k].length;
+    for (let i = 0; i < l; i++) {
+      for (let o = 0; o < data[k][i].words.length; o++) {
         if (data[k][i].words[o] === str) {
           founds.push(data[k][i])
           break
@@ -19,23 +20,23 @@ helpers.load_or_unzip(function(data) {
     return founds
   }
 
-  var is_id = function(str) {
-    return str.match(/[a-z]\.(adjective|verb|noun|adverb)\.[0-9]/i) != null
+  let is_id = function(str) {
+    return str.match(/[a-z]\.(adjective|verb|noun|adverb)\.[0-9]/i) !== null
   }
 
-  var id_lookup = function(id, k) {
-    var l = data[k].length;
-    for (var i = 0; i < l; i++) {
-      if (data[k][i].id == id) {
+  let id_lookup = function(id, k) {
+    let l = data[k].length;
+    for (let i = 0; i < l; i++) {
+      if (data[k][i].id === id) {
         return [data[k][i]]
       }
     }
   }
 
-  var lookup = function(str, k) {
+  let lookup = function(str, k) {
     //given an id
     if (is_id(str)) {
-      var type = str.match(/[a-z]\.(adjective|verb|noun|adverb)\.[0-9]/i)[1]
+      let type = str.match(/[a-z]\.(adjective|verb|noun|adverb)\.[0-9]/i)[1]
       return id_lookup(str, type)
     }
     //given a pos
@@ -46,9 +47,9 @@ helpers.load_or_unzip(function(data) {
       return data[k]
     }
     //else, lookup in all types
-    var types = ["adverb", "adjective", "verb", "noun"]
-    var all = []
-    for (var i = 0; i < types.length; i++) {
+    let types = ["adverb", "adjective", "verb", "noun"]
+    let all = []
+    for (let i = 0; i < types.length; i++) {
       all = all.concat(fast_search(str, types[i]))
     }
     return all
@@ -75,27 +76,27 @@ helpers.load_or_unzip(function(data) {
 
   exports.synonyms = function(s) {
     return lookup(s, "adjective").map(function(syn) {
-      var loose = syn.similar.map(function(id) {
+      let loose = syn.similar.map(function(id) {
         return lookup(id, "adjective")[0].words
       })
       return {
         synset: syn.id,
         close: syn.words.filter(function(w) {
-          return w != s
+          return w !== s
         }),
         far: helpers.flatten(loose).filter(function(w) {
-          return w != s
+          return w !== s
         })
       }
     })
   }
 
   exports.antonyms = function(s) {
-    var ants = lookup(s, "adjective").map(function(syn) {
+    let ants = lookup(s, "adjective").map(function(syn) {
       return syn.antonym
     })
     ants = helpers.unique(helpers.flatten(ants))
-    var all = ants.map(function(id) {
+    let all = ants.map(function(id) {
       return lookup(id, "adjective")[0]
     })
     return all
@@ -106,7 +107,26 @@ helpers.load_or_unzip(function(data) {
     }))
   }
 
+  exports.words = function(cb) {
+    helpers.load_or_unzip((obj)=>{
+      let keys=Object.keys(obj)
+      let words={}
+      for(let i=0; i<keys.length; i++){
+        for(let o=0; o<obj[keys[i]].length; o++){
+          for(let w=0; w<obj[keys[i]][o].words.length; w++){
+            words[obj[keys[i]][o].words[w]]=true
+          }
+        }
+      }
+      cb(Object.keys(words).sort())
+    })
+  }
+
 })
 
 // console.log(exports.pos("perverse"))
 // console.log(exports.antonyms("perverse"))
+// exports.words((arr)=>{
+//   console.log(arr.filter((s)=> s.match(/cool/)))
+// })
+// exports.words((arr)=>{console.log(arr.slice(110,113))})
