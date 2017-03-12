@@ -2,15 +2,16 @@
   "author": "Spencer Kelly <spencermountain@gmail.com> (http://spencermounta.in)",
   "name": "wordnetjs",
   "description": "a wordnet build in JSON",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/nlp-compromise/wordnet.js.git"
   },
   "scripts": {
-    "test": "nodeunit ./tests/unit_test.js "
+    "test": "node ./scripts/test.js",
+    "watch": "node ./scripts/watch.js"
   },
-  "main": "index.js",
+  "main": "./src/index.js",
   "engines": [
     "node >= 0.3.6"
   ],
@@ -18,8 +19,10 @@
     "nodeunit": "0.9.*"
   },
   "devDependencies": {
-    "dirtyjs": "*",
-    "freebase": "*"
+    "gaze": "^1.1.2",
+    "shelljs": "^0.7.7",
+    "tap-spec": "4.1.1",
+    "tape": "4.6.0"
   },
   "license": "MIT"
 }
